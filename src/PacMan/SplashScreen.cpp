@@ -27,7 +27,7 @@ void SplashScreen::Update(InputManager inputManager)
 	timer -= deltaTime;
 
 	if (timer < 0.0)
-		std::cout << "Time's up! \n";
+		state = SceneState::GOTO_MENU;
 }
 
 void SplashScreen::Draw()

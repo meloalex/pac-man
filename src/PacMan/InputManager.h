@@ -12,8 +12,12 @@ public:
 	bool pPressed;
 	bool wPressed;
 	bool sPressed;
+	bool aPressed;
+	bool dPressed;
 	bool upPressed;
 	bool downPressed;
+	bool leftPressed;
+	bool rightPressed;
 	bool quit;
 
 	SDL_Event event;

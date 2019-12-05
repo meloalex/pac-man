@@ -40,14 +40,22 @@ void InputManager::Update()
 			if (event.key.keysym.sym == SDLK_p) pPressed = true;
 			if (event.key.keysym.sym == SDLK_w) wPressed = true;
 			if (event.key.keysym.sym == SDLK_s) sPressed = true;
+			if (event.key.keysym.sym == SDLK_a) aPressed = true;
+			if (event.key.keysym.sym == SDLK_d) dPressed = true;
 			if (event.key.keysym.sym == SDLK_UP) upPressed = true;
 			if (event.key.keysym.sym == SDLK_DOWN) downPressed = true;
+			if (event.key.keysym.sym == SDLK_LEFT) leftPressed = true;
+			if (event.key.keysym.sym == SDLK_RIGHT) rightPressed = true;
 			break;
 		case SDL_KEYUP:
 			if (event.key.keysym.sym == SDLK_w) wPressed = false;
 			if (event.key.keysym.sym == SDLK_s) sPressed = false;
+			if (event.key.keysym.sym == SDLK_a) aPressed = false;
+			if (event.key.keysym.sym == SDLK_d) dPressed = false;
 			if (event.key.keysym.sym == SDLK_UP) upPressed = false;
 			if (event.key.keysym.sym == SDLK_DOWN) downPressed = false;
+			if (event.key.keysym.sym == SDLK_LEFT) leftPressed = false;
+			if (event.key.keysym.sym == SDLK_RIGHT) rightPressed = false;
 			break;
 		case SDL_MOUSEMOTION:
 			mousePosition.x = event.motion.x;

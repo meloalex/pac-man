@@ -14,7 +14,7 @@ Renderer::Renderer()
 	if (m_renderer == nullptr) throw "No es pot inicialitzar SDL_Renderer";
 
 	//Initialize renderer color
-	SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
 
 	//Initialize PNG loading
 	const Uint8 imgFlags{ IMG_INIT_PNG | IMG_INIT_JPG };
@@ -29,8 +29,7 @@ Renderer::Renderer()
 
 	// Load Textures
 	LoadTexture("backgroundSplashScreen", "../../res/img/backgroundSplashScreen.jpg");
-	LoadTexture("pacMan", "../../res/img/PacManSpritesheet.png");
-
+	LoadTexture("spritesheet", "../../res/img/PacManSpritesheet.png");
 };
 
 
@@ -85,7 +84,7 @@ void Renderer::PushImage(const std::string &id, const mtdl::Rect &rect) {
 	SDL_RenderCopy(m_renderer, m_textureData[id], nullptr, &rectangle);
 };
 
-void Renderer::PushSprite(const std::string &id, const mtdl::Rect &rectSprite,const mtdl::Rect &rectPos) {
+void Renderer::PushSprite(const std::string &id, const mtdl::Rect &rectSprite, const mtdl::Rect &rectPos) {
 	SDL_Rect rectangleSprite{ rectSprite.position.x, rectSprite.position.y, rectSprite.w , rectSprite.h };
 	SDL_Rect rectanglePos{ rectPos.position.x, rectPos.position.y, rectPos.w , rectPos.h };
 

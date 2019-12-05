@@ -2,6 +2,7 @@
 
 Scene::Scene()
 {
+	state = SceneState::RUNNING;
 }
 
 Scene::~Scene()
