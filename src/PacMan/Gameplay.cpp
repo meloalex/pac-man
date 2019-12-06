@@ -2,6 +2,8 @@
 
 Gameplay::Gameplay()
 {
+	internalState = GameplayState::GAME_START;
+
 	texture = "spritesheet";
 
 	wallSprite = mtdl::Rect(SPRITESHEET_RECT_SIZE * 4, SPRITESHEET_RECT_SIZE * 6, SPRITESHEET_RECT_SIZE, SPRITESHEET_RECT_SIZE);
@@ -10,6 +12,14 @@ Gameplay::Gameplay()
 
 	player = Player(initialPlayerPosition * SPRITE_PIXEL_SIZE);
 	hud = HUD();
+
+	buttons["toggleSound"] = new Button("Sound ON", mtdl::Vector2(0, 300), mtdl::Color(0, 0, 0, 255), mtdl::Color(255, 0, 0, 255), "pacman38", true);
+	
+	Renderer::Instance()->LoadTextureText("pacman38", mtdl::Text("PRESS SPACE BAR", mtdl::Color(255, 255, 255, 255), "pressSpace"));
+	texts["pressSpace"] = mtdl::Rect(SCREEN_WIDTH / 2 - Renderer::Instance()->GetTextureSize("pressSpace").x / 2, 250, Renderer::Instance()->GetTextureSize("pressSpace"));
+	
+	if (!AudioManager::Instance()->audioOn)
+		buttons["toggleSound"]->UpdateText("Sound OFF");
 }
 
 
@@ -19,8 +29,41 @@ Gameplay::~Gameplay()
 
 void Gameplay::Update(InputManager inputManager)
 {
-	player.Update(inputManager.upPressed, inputManager.downPressed, inputManager.leftPressed, inputManager.rightPressed);
-	hud.Update(score, lives);
+	switch (internalState)
+	{
+	case GameplayState::GAME_START:
+		if (inputManager.spacePressed) internalState = GameplayState::RUNNING;
+		if (inputManager.escPressed) state = SceneState::GOTO_MENU;
+		break;
+
+	case GameplayState::RUNNING:
+		if (inputManager.pPressed) internalState = GameplayState::PAUSED;
+		player.Update(inputManager.upPressed, inputManager.downPressed, inputManager.leftPressed, inputManager.rightPressed);
+		hud.Update(score, lives);
+		break;
+
+	case GameplayState::PAUSED:
+		if (inputManager.spacePressed) internalState = GameplayState::RUNNING;
+		if (inputManager.escPressed) state = SceneState::GOTO_MENU;
+
+		if (buttons["toggleSound"]->isPressed(inputManager.mousePosition, inputManager.mousePressed) && AudioManager::Instance()->audioOn)
+		{
+			buttons["toggleSound"]->UpdateText("Sound Off");
+			AudioManager::Instance()->PauseAudio();
+		}
+		else if (buttons["toggleSound"]->isPressed(inputManager.mousePosition, inputManager.mousePressed))
+		{
+			buttons["toggleSound"]->UpdateText("Sound On");
+			AudioManager::Instance()->ResumeAudio();
+		}
+		break;
+
+	case GameplayState::GAME_OVER:
+		break;
+
+	default:
+		break;
+	}
 }
 
 void Gameplay::Draw()
@@ -32,10 +75,29 @@ void Gameplay::Draw()
 		Renderer::Instance()->PushSprite(texture, wallSprite, mtdl::Rect(map[i].position.x * SPRITE_PIXEL_SIZE, map[i].position.y * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE));
 	}
 
-
 	player.Draw();
 	hud.Draw();
 
+	switch (internalState)
+	{
+	case GameplayState::GAME_START:
+		Renderer::Instance()->PushImage("pressSpace", texts["pressSpace"]);
+		break;
+
+	case GameplayState::RUNNING:
+		break;
+
+	case GameplayState::PAUSED:
+		buttons["toggleSound"]->Draw();
+		Renderer::Instance()->PushImage("pressSpace", texts["pressSpace"]);
+		break;
+
+	case GameplayState::GAME_OVER:
+		break;
+
+	default:
+		break;
+	}
 	Renderer::Instance()->Render();
 }
 

@@ -12,13 +12,18 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <map>
 
 #include "Player.h"
 #include "HUD.h"
+#include "Button.h"
+#include "AudioManager.h"
 
 #define CONFIG_FILE_PATH "../../res/files/config.xml"
 
 enum class TileType {NORMAL, WALL, ENEMY, PLAYER, POWERUP};
+
+enum class GameplayState {GAME_START, RUNNING, PAUSED, GAME_OVER};
 
 struct Tile
 {
@@ -37,9 +42,15 @@ class Gameplay :
 	public Scene
 {
 private:
-	Player player;
-	HUD hud;
+	GameplayState internalState;
 
+	// UI
+	HUD hud;
+	std::unordered_map<std::string, Button*> buttons;
+	std::unordered_map<std::string, mtdl::Rect> texts;
+
+	// Gameplay
+	Player player;
 	std::vector<Tile> map;
 	
 	mtdl::Vector2 initialPlayerPosition;

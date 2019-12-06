@@ -46,6 +46,17 @@ void GameController::Update()
 
 		break;
 	case GameState::GAMEPLAY:
+		switch (currentScene->state)
+		{
+		case SceneState::GOTO_MENU:
+			gameState = GameState::MENU;
+			delete(currentScene);
+			currentScene = new Menu();
+			break;
+
+		default:
+			break;
+		}
 		break;
 	case GameState::RANKING:
 		break;
