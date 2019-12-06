@@ -1,11 +1,14 @@
 #include "Player.h"
-#include <iostream>
-
 
 Player::Player()
 {
+
+}
+
+Player::Player(mtdl::Vector2 pos)
+{
 	texture = "spritesheet";
-	position = mtdl::Rect(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT);
+	position = mtdl::Rect(pos.x, pos.y, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
 
 	// Time
 	timer = ANIMATION_TIME;
@@ -16,7 +19,7 @@ Player::Player()
 	key_frame = 0;
 	animation = Animation::MOVE_RIGHT;
 	breakAnimation = false;
-	spritePosition = mtdl::Rect(0, 0, PLAYER_WIDTH, PLAYER_HEIGHT);
+	spritePosition = mtdl::Rect(0, 0, SPRITESHEET_RECT_SIZE, SPRITESHEET_RECT_SIZE);
 
 	// Movement
 	direction = mtdl::Vector2(0, 0);
@@ -30,6 +33,7 @@ Player::~Player()
 
 void Player::Update(bool _up, bool _down, bool _left, bool _right)
 {
+	Collision();
 	Move(_up, _down, _left, _right);
 	Animate();
 }
@@ -105,7 +109,7 @@ void Player::Animate()
 				key_frame = 0;
 			}
 			else if (key_frame == 0) {
-				spritePosition.position.x = PLAYER_WIDTH * 1;
+				spritePosition.position.x = SPRITESHEET_RECT_SIZE * 1;
 				key_frame++;
 			}
 			break;
@@ -114,11 +118,11 @@ void Player::Animate()
 			
 			if (key_frame == 1 || lastDirection != Animation::MOVE_DOWN)
 			{
-				spritePosition.position.x = PLAYER_WIDTH * 2;
+				spritePosition.position.x = SPRITESHEET_RECT_SIZE * 2;
 				key_frame = 0;
 			}
 			else if (key_frame == 0) {
-				spritePosition.position.x = PLAYER_WIDTH * 3;
+				spritePosition.position.x = SPRITESHEET_RECT_SIZE * 3;
 				key_frame++;
 			}
 			break;
@@ -126,11 +130,11 @@ void Player::Animate()
 		case Animation::MOVE_LEFT:
 			if (key_frame == 1 || lastDirection != Animation::MOVE_LEFT)
 			{
-				spritePosition.position.x = PLAYER_WIDTH * 6;
+				spritePosition.position.x = SPRITESHEET_RECT_SIZE * 6;
 				key_frame = 0;
 			}
 			else if (key_frame == 0) {
-				spritePosition.position.x = PLAYER_WIDTH * 7;
+				spritePosition.position.x = SPRITESHEET_RECT_SIZE * 7;
 				key_frame++;
 			}
 			break;
@@ -138,11 +142,11 @@ void Player::Animate()
 		case Animation::MOVE_RIGHT:
 			if (key_frame == 1 || lastDirection != Animation::MOVE_RIGHT)
 			{
-				spritePosition.position.x = PLAYER_WIDTH * 4;
+				spritePosition.position.x = SPRITESHEET_RECT_SIZE * 4;
 				key_frame = 0;
 			}
 			else if (key_frame == 0) {
-				spritePosition.position.x = PLAYER_WIDTH * 5;
+				spritePosition.position.x = SPRITESHEET_RECT_SIZE * 5;
 				key_frame++;
 			}
 			break;
@@ -150,17 +154,17 @@ void Player::Animate()
 		case Animation::DIE:
 			if (key_frame == 0)
 			{
-				spritePosition.position.x = PLAYER_WIDTH * 4;
-				spritePosition.position.y = PLAYER_HEIGHT * 4;
+				spritePosition.position.x = SPRITESHEET_RECT_SIZE * 4;
+				spritePosition.position.y = SPRITESHEET_RECT_SIZE * 4;
 			}
 			else if (key_frame < 4)
 			{
-				spritePosition.position.x += PLAYER_WIDTH;
+				spritePosition.position.x += SPRITESHEET_RECT_SIZE;
 			}
 			else if (key_frame < 12)
 			{
-				spritePosition.position.x = PLAYER_WIDTH * key_frame - DIE_ANIMATION_OFFSET;
-				spritePosition.position.y = PLAYER_HEIGHT * 5;
+				spritePosition.position.x = SPRITESHEET_RECT_SIZE * key_frame - DIE_ANIMATION_OFFSET;
+				spritePosition.position.y = SPRITESHEET_RECT_SIZE * 5;
 			}
 
 			key_frame++;
@@ -170,4 +174,21 @@ void Player::Animate()
 			break;
 		}
 	}
+}
+
+void Player::Collision()
+{
+	/*
+	mtdl::Rect nextTile = mtdl::Rect(position.position.x - SPRITE_PIXEL_SIZE, position.position.y - SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+
+	bool isColliding = mtdl::RectRectCollision(position, nextTile);
+
+	for (int i = 0; i < map.size(); i++)
+	{
+		if (map.at(i).position == nextTile.position)
+			std::cout << "Collision \n";
+	}
+	
+	std::cout << isColliding << std::endl;
+	*/
 }

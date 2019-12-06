@@ -9,6 +9,10 @@
 #define SCREEN_WIDTH 900
 #define SCREEN_HEIGHT 700
 
+#define SPRITESHEET_RECT_SIZE 128
+#define SPRITE_PIXEL_SIZE 35
+#define POSITION_TO_PIXEL_OFFSET 1
+
 class Renderer {
 
 private:

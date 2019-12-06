@@ -2,9 +2,8 @@
 #include "Renderer.h"
 #include "../mtdl/mtdl.h"
 #include <time.h>
-
-#define PLAYER_WIDTH 128
-#define PLAYER_HEIGHT 128
+#include <iostream>
+#include <vector>
 
 #define ANIMATION_TIME 0.3
 #define MOVEMENT_ANIMATION_KEYFRAMES 2
@@ -34,6 +33,7 @@ private:
 
 public:
 	Player();
+	Player(mtdl::Vector2 pos);
 	~Player();
 
 	void Update(bool _up, bool _down, bool _left, bool _right);
@@ -41,5 +41,6 @@ public:
 
 	void Animate();
 	void Move(bool _up, bool _down, bool _left, bool _right);
+	void Collision();
 };
 

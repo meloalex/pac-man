@@ -15,6 +15,19 @@ namespace mtdl {
 			x = _x;
 			y = _y;
 		}
+
+		bool operator==(const Vector2 a)
+		{
+			return (x == a.x && y == a.y);
+		}
+
+		Vector2 operator*(const int e)
+		{
+			x *= e;
+			y *= e;
+
+			return Vector2(x, y);
+		}
 	};
 
 	struct Rect {			//Rectangle

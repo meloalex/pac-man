@@ -123,6 +123,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="Gameplay.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="Gameplay.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
