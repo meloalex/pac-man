@@ -73,5 +73,7 @@ public:
 	void Draw();
 
 	void LoadMap();
+
+	void Collision();
 };
 

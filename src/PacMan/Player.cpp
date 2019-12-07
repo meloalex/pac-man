@@ -192,3 +192,18 @@ void Player::Collision()
 	std::cout << isColliding << std::endl;
 	*/
 }
+
+mtdl::Vector2 Player::GetDirection()
+{
+	return direction;
+}
+
+void Player::SetDirection(int x, int y)
+{
+	direction = mtdl::Vector2(x, y);
+}
+
+void Player::SetAnimation(Animation anim)
+{
+	animation = anim;
+}

@@ -42,5 +42,9 @@ public:
 	void Animate();
 	void Move(bool _up, bool _down, bool _left, bool _right);
 	void Collision();
+
+	mtdl::Vector2 GetDirection();
+	void SetDirection(int x, int y);
+	void SetAnimation(Animation anim);
 };
 

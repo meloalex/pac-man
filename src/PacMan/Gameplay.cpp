@@ -177,3 +177,39 @@ void Gameplay::LoadMap()
 		std::cout << e.what() << std::endl;
 	}
 }
+
+void Gameplay::Collision()
+{
+	// Player collision
+	mtdl::Vector2 playerActualPos;
+	mtdl::Vector2 playerNextPos;
+	for (int pos = 0; pos < map.size(); pos++)
+	{
+		if (map[pos].type == TileType::PLAYER)
+		{
+			playerActualPos = mtdl::Vector2(map[pos].position.x, map[pos].position.y);
+			playerNextPos = mtdl::Vector2(playerActualPos.x + player.GetDirection().x, playerActualPos.y + player.GetDirection().y);
+			
+			
+			for (int pos2 = 0; pos2 < map.size(); pos2++) {
+
+				if(map[pos2].position ==  playerNextPos)
+				{
+					if (map[pos2].type == TileType::WALL)
+						player.SetDirection(0, 0);
+					if (map[pos2].type == TileType::ENEMY)// Add player with and without powerUp state 
+					{
+						lives--;
+						if (lives == 0) player.SetAnimation(Animation::DIE);
+					}
+					if (map[pos2].type == TileType::POWERUP)// Add player powerUp state
+						//player.animation = Animation::POWERUP
+					
+					break;
+				}
+				
+			}
+		}
+	}
+
+}
