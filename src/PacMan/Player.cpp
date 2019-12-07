@@ -178,19 +178,19 @@ void Player::Animate()
 
 void Player::Collision()
 {
-	/*
-	mtdl::Rect nextTile = mtdl::Rect(position.position.x - SPRITE_PIXEL_SIZE, position.position.y - SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
-
-	bool isColliding = mtdl::RectRectCollision(position, nextTile);
-
-	for (int i = 0; i < map.size(); i++)
-	{
-		if (map.at(i).position == nextTile.position)
-			std::cout << "Collision \n";
-	}
 	
-	std::cout << isColliding << std::endl;
-	*/
+	//mtdl::Rect nextTile = mtdl::Rect(position.position.x - SPRITE_PIXEL_SIZE, position.position.y - SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+
+	//bool isColliding = mtdl::RectRectCollision(position, nextTile);
+
+	//for (int i = 0; i < map.size(); i++)
+	//{
+	//	if (map.at(i).position == nextTile.position)
+	//		std::cout << "Collision \n";
+	//}
+	//
+	//std::cout << isColliding << std::endl;
+	
 }
 
 mtdl::Vector2 Player::GetDirection()

@@ -38,6 +38,7 @@ void Gameplay::Update(InputManager inputManager)
 
 	case GameplayState::RUNNING:
 		if (inputManager.pPressed) internalState = GameplayState::PAUSED;
+		Collision();
 		player.Update(inputManager.upPressed, inputManager.downPressed, inputManager.leftPressed, inputManager.rightPressed);
 		hud.Update(score, lives);
 		break;
@@ -146,7 +147,10 @@ void Gameplay::LoadMap()
 			y -= POSITION_TO_PIXEL_OFFSET;
 
 			if (nodeName.compare("Player") == 0)
+			{
+				map.push_back(Tile(mtdl::Vector2(x, y), TileType::PLAYER));
 				initialPlayerPosition = mtdl::Vector2(x, y);
+			}
 			else if (nodeName.compare("Blinky") == 0)
 				initialBlinkyPosition = mtdl::Vector2(x, y);
 			else if (nodeName.compare("Inky") == 0)
@@ -189,14 +193,15 @@ void Gameplay::Collision()
 		{
 			playerActualPos = mtdl::Vector2(map[pos].position.x, map[pos].position.y);
 			playerNextPos = mtdl::Vector2(playerActualPos.x + player.GetDirection().x, playerActualPos.y + player.GetDirection().y);
-			
-			
+
 			for (int pos2 = 0; pos2 < map.size(); pos2++) {
 
 				if(map[pos2].position ==  playerNextPos)
 				{
 					if (map[pos2].type == TileType::WALL)
+					{
 						player.SetDirection(0, 0);
+					}
 					if (map[pos2].type == TileType::ENEMY)// Add player with and without powerUp state 
 					{
 						lives--;
@@ -213,3 +218,5 @@ void Gameplay::Collision()
 	}
 
 }
+
+//sprite_pixel_size
