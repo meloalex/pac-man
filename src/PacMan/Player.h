@@ -1,11 +1,12 @@
 #pragma once
 #include "Renderer.h"
-#include "../mtdl/mtdl.h"
+#include "../../dep/inc/mtdl/mtdl.h"
 #include <time.h>
 #include <math.h>
 #include <iostream>
 #include <vector>
 #include "Tile.h"
+
 
 #define ANIMATION_TIME 0.3
 #define MOVEMENT_ANIMATION_KEYFRAMES 2

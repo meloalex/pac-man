@@ -4,7 +4,7 @@
 #include <SDL_ttf.h>
 #include <string.h>
 #include <unordered_map>
-#include "../mtdl/mtdl.h"
+#include "../../dep/inc/mtdl/mtdl.h"
 
 #define SCREEN_WIDTH 900
 #define SCREEN_HEIGHT 700

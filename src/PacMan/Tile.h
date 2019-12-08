@@ -1,5 +1,5 @@
 #pragma once
-#include "../mtdl/mtdl.h"
+#include "../../dep/inc/mtdl/mtdl.h"
 
 enum class TileType { NORMAL, WALL, ENEMY, PLAYER, POWERUP };
 

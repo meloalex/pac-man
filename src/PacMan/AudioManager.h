@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL_mixer.h>
 #include <unordered_map>
-#include "../mtdl/mtdl.h"
+#include "../../dep/inc/mtdl/mtdl.h"
 
 class AudioManager
 {

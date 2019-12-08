@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-#include "../mtdl/mtdl.h"
+#include "../../dep/inc/mtdl/mtdl.h"
 
 class InputManager
 {

@@ -4,8 +4,10 @@ Clyde::Clyde()
 {
 }
 
-Clyde::Clyde(mtdl::Vector2 pos)
+Clyde::Clyde(mtdl::Vector2 pos, Tile** _map)
 {
+	map = _map;
+
 	texture = "spritesheet";
 	position = mtdl::Rect(pos.x, pos.y, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
 
@@ -172,4 +174,46 @@ void Clyde::Animate()
 			break;
 		}
 	}
+}
+
+CollisionSide Clyde::Collision()
+{
+	int clydeCenterPixels = position.position.x + (position.w / 2);
+
+	switch (lastDirection)
+	{
+	case Animation::MOVE_UP:
+		tile = mtdl::Rect(map[clydePositionOnGrid.x][clydePositionOnGrid.y - 1].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+		if (mtdl::RectRectCollision(position, tile)) return CollisionSide::TOP;
+
+
+		if (clydeCenterPixels < tile.position.x + (tile.w / 2))
+		{
+			tile = mtdl::Rect(map[clydePositionOnGrid.x - 1][clydePositionOnGrid.y - 1].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+			if (mtdl::RectRectCollision(position, tile)) return CollisionSide::TOP;
+		}
+		else if (clydeCenterPixels < tile.position.x + tile.w)
+		{
+			tile = mtdl::Rect(map[clydePositionOnGrid.x + 1][clydePositionOnGrid.y - 1].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+			if (mtdl::RectRectCollision(position, tile)) return CollisionSide::TOP;
+		}
+		break;
+
+	case Animation::MOVE_DOWN:
+		tile = mtdl::Rect(map[clydePositionOnGrid.x][clydePositionOnGrid.y + 1].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+		if (mtdl::RectRectCollision(position, tile)) return CollisionSide::BOTTOM;
+		break;
+
+	case Animation::MOVE_LEFT:
+		tile = mtdl::Rect(map[clydePositionOnGrid.x - 1][clydePositionOnGrid.y].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+		if (mtdl::RectRectCollision(position, tile)) return CollisionSide::LEFT;
+		break;
+
+	case Animation::MOVE_RIGHT:
+		tile = mtdl::Rect(map[clydePositionOnGrid.x + 1][clydePositionOnGrid.y].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+		if (mtdl::RectRectCollision(position, tile)) return CollisionSide::RIGHT;
+		break;
+	}
+
+	return CollisionSide::NONE;
 }

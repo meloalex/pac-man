@@ -13,13 +13,19 @@ public:
 	int speed;
 	int reward;
 
+	Tile** map;
+	mtdl::Vector2 lastInkyPositionOnGrid;
+	mtdl::Vector2 inkyPositionOnGrid;
+	mtdl::Rect tile;
+
 	void Draw();
 	void Update(bool _up, bool _down, bool _left, bool _right);
 
 	void MoveInky(bool _up, bool _down, bool _left, bool _right); //Moves like the player
 	void Animate();
+	CollisionSide Collision();
 
 	Inky();
-	Inky(mtdl::Vector2 pos);
+	Inky(mtdl::Vector2 pos, Tile** _map);
 	~Inky();
 };

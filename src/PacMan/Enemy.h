@@ -1,9 +1,10 @@
 #pragma once
 #include "Renderer.h"
-#include "../mtdl/mtdl.h"
+#include "../../dep/inc/mtdl/mtdl.h"
 #include <time.h>
 #include <iostream>
 #include <vector>
+#include "Tile.h"
 
 #define ANIMATION_TIME 0.3
 #define MOVEMENT_ANIMATION_KEYFRAMES 2
@@ -13,6 +14,7 @@
 enum class EnemyType { INKY, CLYDE }; //BLINKY
 
 enum class Animation { MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, DIE };
+enum class CollisionSide { TOP, BOTTOM, LEFT, RIGHT, NONE };
 
 class Enemy
 {

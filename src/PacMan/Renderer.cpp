@@ -14,7 +14,7 @@ Renderer::Renderer()
 	if (m_renderer == nullptr) throw "No es pot inicialitzar SDL_Renderer";
 
 	//Initialize renderer color
-	SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(m_renderer, 125, 125, 125, 255);
 
 	//Initialize PNG loading
 	const Uint8 imgFlags{ IMG_INIT_PNG | IMG_INIT_JPG };

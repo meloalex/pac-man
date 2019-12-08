@@ -1,6 +1,6 @@
 #pragma once
 #include "Renderer.h"
-#include "../mtdl/mtdl.h"
+#include "../../dep/inc/mtdl/mtdl.h"
 
 class HUD
 {

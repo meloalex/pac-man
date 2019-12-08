@@ -1,7 +1,7 @@
 #pragma once
 #include "InputManager.h"
 #include "Renderer.h"
-#include "../mtdl/mtdl.h"
+#include "../../dep/inc/mtdl/mtdl.h"
 
 enum class SceneState { RUNNING, PAUSED, GOTO_MENU, GOTO_GAMEPLAY, GOTO_RANKING, EXIT };
 
