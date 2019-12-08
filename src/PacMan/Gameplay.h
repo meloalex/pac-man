@@ -60,5 +60,8 @@ public:
 	void Draw();
 
 	void LoadMap();
+
+	void Collision();
+	void Collision(InputManager inputManager);
 };
 
