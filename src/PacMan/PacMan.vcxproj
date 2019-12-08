@@ -121,9 +121,12 @@
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Clyde.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="Gameplay.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Inky.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -135,9 +138,12 @@
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Clyde.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="Gameplay.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="Inky.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />

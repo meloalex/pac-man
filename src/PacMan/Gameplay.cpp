@@ -192,23 +192,25 @@ void Gameplay::Collision()
 		if (map[pos].type == TileType::PLAYER)
 		{
 			playerActualPos = mtdl::Vector2(map[pos].position.x, map[pos].position.y);
-			playerNextPos = mtdl::Vector2(playerActualPos.x + player.GetDirection().x, playerActualPos.y + player.GetDirection().y);
+			playerNextPos = mtdl::Vector2(playerActualPos.x + player.GetDirection().x, playerActualPos.y - player.GetDirection().y);  //---tindre en compte la x,y del sdl
 
 			for (int pos2 = 0; pos2 < map.size(); pos2++) {
 
-				if(map[pos2].position ==  playerNextPos)
+				if(map[pos2].position.x ==  playerNextPos.x && map[pos2].position.y == playerNextPos.y) ////-------AQUI 
 				{
 					if (map[pos2].type == TileType::WALL)
 					{
 						player.SetDirection(0, 0);
+						break;
 					}
-					if (map[pos2].type == TileType::ENEMY)// Add player with and without powerUp state 
-					{
-						lives--;
-						if (lives == 0) player.SetAnimation(Animation::DIE);
-					}
-					if (map[pos2].type == TileType::POWERUP)// Add player powerUp state
-						//player.animation = Animation::POWERUP
+					//if (map[pos2].type == TileType::ENEMY)// Add player with and without powerUp state 
+					//{
+					//	lives--;
+					//	if (lives == 0) player.SetAnimation(Animation::DIE);
+					//	
+					//}
+					//if (map[pos2].type == TileType::POWERUP)// Add player powerUp state
+					//	//player.animation = Animation::POWERUP
 					
 					break;
 				}
@@ -220,3 +222,30 @@ void Gameplay::Collision()
 }
 
 //sprite_pixel_size
+
+void Gameplay::Collision(InputManager inputManager)
+{
+	// Player collision
+	mtdl::Vector2 playerActualPos;
+	mtdl::Vector2 playerNextPos;
+	for (int pos = 0; pos < map.size(); pos++)
+	{
+		if (map[pos].type == TileType::PLAYER)
+		{
+			playerActualPos = mtdl::Vector2(map[pos].position.x, map[pos].position.y);
+			playerNextPos = mtdl::Vector2(playerActualPos.x + player.GetDirection().x, playerActualPos.y - player.GetDirection().y);  //---tindre en compte la x,y del sdl
+			break;
+		}
+	}
+	for (int pos = 0; pos < map.size(); pos++)
+	{
+		if (map[pos].type == TileType::WALL && map[pos].position.x == playerNextPos.x && map[pos].position.y == playerNextPos.y)
+		{
+			
+			player.SetDirection(0, 0);
+			inputManager.downPressed = inputManager.upPressed = inputManager.rightPressed = inputManager.leftPressed = false;
+			break;
+		}
+	}
+
+}

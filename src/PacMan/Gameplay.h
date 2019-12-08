@@ -75,5 +75,6 @@ public:
 	void LoadMap();
 
 	void Collision();
+	void Collision(InputManager inputManager);
 };
 
