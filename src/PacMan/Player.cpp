@@ -5,10 +5,13 @@ Player::Player()
 
 }
 
-Player::Player(mtdl::Vector2 pos)
+Player::Player(mtdl::Vector2 pos, Tile** _map)
 {
+	map = _map;
+
 	texture = "spritesheet";
-	position = mtdl::Rect(pos.x, pos.y, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+	playerPositionOnGrid = mtdl::Vector2(pos.x, pos.y);
+	position = mtdl::Rect(pos * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
 
 	// Time
 	timer = ANIMATION_TIME;
@@ -23,17 +26,17 @@ Player::Player(mtdl::Vector2 pos)
 
 	// Movement
 	direction = mtdl::Vector2(0, 0);
-	speed = 3;
+	speed = 1;
 }
 
 
 Player::~Player()
 {
+
 }
 
 void Player::Update(bool _up, bool _down, bool _left, bool _right)
 {
-	Collision();
 	Move(_up, _down, _left, _right);
 	Animate();
 }
@@ -41,12 +44,15 @@ void Player::Update(bool _up, bool _down, bool _left, bool _right)
 void Player::Draw()
 {
 	Renderer::Instance()->PushSprite(texture, spritePosition, position);
+	// Renderer::Instance()->PushImage("debug", tile);
 }
 
 void Player::Move(bool _up, bool _down, bool _left, bool _right)
 {
+	lastPlayerPositionOnGrid = mtdl::Vector2(round((position.position.x + (position.w / 2)) / SPRITE_PIXEL_SIZE), round((position.position.y + (position.h / 2))/ SPRITE_PIXEL_SIZE));
+
 	// Asign vector movement and animation
-	if (_up) 
+	if (_up)
 	{
 		lastDirection != Animation::MOVE_UP ? breakAnimation = true : breakAnimation = false;
 
@@ -75,12 +81,34 @@ void Player::Move(bool _up, bool _down, bool _left, bool _right)
 		animation = Animation::MOVE_RIGHT;
 	}
 	
+	// Check if still can move
+	switch (animation)
+	{
+	case Animation::MOVE_UP:
+		if (Collision() == CollisionSide::TOP) return;
+		break;
+	case Animation::MOVE_DOWN:
+		if (Collision() == CollisionSide::BOTTOM) return;
+		break;
+	case Animation::MOVE_LEFT:
+		if (Collision() == CollisionSide::LEFT) return;
+		break;
+	case Animation::MOVE_RIGHT:
+		if (Collision() == CollisionSide::RIGHT) return;
+		break;
+	}
+
 	// Update Last Direction
 	lastDirection = animation;
 
 	// Apply movement
 	position.position.x += direction.x * speed;
 	position.position.y += direction.y * speed;
+
+	// Update player's position on grid
+	map[lastPlayerPositionOnGrid.x][lastPlayerPositionOnGrid.y].type = TileType::NORMAL;	// Erase last position
+	playerPositionOnGrid = mtdl::Vector2(round((position.position.x + (position.w / 2)) / SPRITE_PIXEL_SIZE), round((position.position.y + (position.h / 2)) / SPRITE_PIXEL_SIZE));	// Calculate new position on grid
+	map[playerPositionOnGrid.x][playerPositionOnGrid.y].type = TileType::PLAYER;	// Update position on grid
 }
 
 void Player::Animate()
@@ -176,19 +204,44 @@ void Player::Animate()
 	}
 }
 
-void Player::Collision()
+CollisionSide Player::Collision()
 {
-	/*
-	mtdl::Rect nextTile = mtdl::Rect(position.position.x - SPRITE_PIXEL_SIZE, position.position.y - SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+	int playerCenterPixels = position.position.x + (position.w / 2);
 
-	bool isColliding = mtdl::RectRectCollision(position, nextTile);
-
-	for (int i = 0; i < map.size(); i++)
+	switch (lastDirection)
 	{
-		if (map.at(i).position == nextTile.position)
-			std::cout << "Collision \n";
+	case Animation::MOVE_UP:
+		tile = mtdl::Rect(map[playerPositionOnGrid.x][playerPositionOnGrid.y - 1].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+		if (mtdl::RectRectCollision(position, tile)) return CollisionSide::TOP;
+
+		
+		if (playerCenterPixels < tile.position.x + (tile.w / 2))
+		{
+			tile = mtdl::Rect(map[playerPositionOnGrid.x - 1][playerPositionOnGrid.y - 1].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+			if (mtdl::RectRectCollision(position, tile)) return CollisionSide::TOP;
+		}
+		else if (playerCenterPixels < tile.position.x + tile.w)
+		{
+			tile = mtdl::Rect(map[playerPositionOnGrid.x + 1][playerPositionOnGrid.y - 1].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+			if (mtdl::RectRectCollision(position, tile)) return CollisionSide::TOP;
+		}
+		break;
+
+	case Animation::MOVE_DOWN:
+		tile = mtdl::Rect(map[playerPositionOnGrid.x][playerPositionOnGrid.y + 1].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+		if (mtdl::RectRectCollision(position, tile)) return CollisionSide::BOTTOM;
+		break;
+
+	case Animation::MOVE_LEFT:
+		tile = mtdl::Rect(map[playerPositionOnGrid.x - 1][playerPositionOnGrid.y].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+		if (mtdl::RectRectCollision(position, tile)) return CollisionSide::LEFT;
+		break;
+
+	case Animation::MOVE_RIGHT:
+		tile = mtdl::Rect(map[playerPositionOnGrid.x + 1][playerPositionOnGrid.y].position * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE);
+		if (mtdl::RectRectCollision(position, tile)) return CollisionSide::RIGHT;
+		break;
 	}
-	
-	std::cout << isColliding << std::endl;
-	*/
+
+	return CollisionSide::NONE;
 }

@@ -30,6 +30,8 @@ Renderer::Renderer()
 	// Load Textures
 	LoadTexture("backgroundSplashScreen", "../../res/img/backgroundSplashScreen.jpg");
 	LoadTexture("spritesheet", "../../res/img/PacManSpritesheet.png");
+
+	LoadTexture("debug", "../../res/img/debug.png"); //Debug texture
 };
 
 

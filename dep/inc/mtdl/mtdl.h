@@ -21,12 +21,9 @@ namespace mtdl {
 			return (x == a.x && y == a.y);
 		}
 
-		Vector2 operator*(const int e)
+		mtdl::Vector2 operator*(const int e)
 		{
-			x *= e;
-			y *= e;
-
-			return Vector2(x, y);
+			return mtdl::Vector2(x * e, y * e);
 		}
 	};
 
@@ -136,11 +133,8 @@ namespace mtdl {
 		return (v.x >= r.position.x) && (v.x <= (r.position.x + r.w)) && (v.y >= r.position.y) && (v.y <= (r.position.y + r.h));
 	}
 
-	inline bool RectRectCollision(Rect r, Rect t) {
-		Vector2 topRight(r.position.x + r.w, r.position.y);
-		Vector2 botLeft(r.position.x, r.position.y + r.h);
-		Vector2 botRight(r.position.x + r.w, r.position.y + r.h);
-		return VectorRectCollision(r.position, t) || VectorRectCollision(topRight, t) || VectorRectCollision(botLeft, t) || VectorRectCollision(botRight, t);
+	inline bool RectRectCollision(Rect rect1, Rect rect2) {
+		return (rect1.position.x < rect2.position.x + rect2.w && rect1.position.x + rect1.w > rect2.position.x && rect1.position.y < rect2.position.y + rect2.h && rect1.position.y + rect1.h > rect2.position.y);
 	}
 
 	inline bool RectRectHorizontalCollision(Rect r, Rect t) {

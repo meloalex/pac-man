@@ -10,7 +10,8 @@ Gameplay::Gameplay()
 
 	LoadMap();
 
-	player = Player(initialPlayerPosition * SPRITE_PIXEL_SIZE);
+	map[initialPlayerPosition.x][initialPlayerPosition.y].type = TileType::PLAYER;
+	player = Player(initialPlayerPosition, map);
 	hud = HUD();
 
 	buttons["toggleSound"] = new Button("Sound ON", mtdl::Vector2(0, 300), mtdl::Color(0, 0, 0, 255), mtdl::Color(255, 0, 0, 255), "pacman38", true);
@@ -70,9 +71,10 @@ void Gameplay::Draw()
 {
 	Renderer::Instance()->Clear();
 
-	for (int i = 0; i < map.size(); i++)
+	for (int i = 0; i < xMapSize; i++)
 	{
-		Renderer::Instance()->PushSprite(texture, wallSprite, mtdl::Rect(map[i].position.x * SPRITE_PIXEL_SIZE, map[i].position.y * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE));
+		for (int j = 0; j < yMapSize; j++)
+			Renderer::Instance()->PushSprite(texture, wallSprite, mtdl::Rect(map[i][j].position.x * SPRITE_PIXEL_SIZE, map[i][j].position.y * SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE, SPRITE_PIXEL_SIZE));
 	}
 
 	player.Draw();
@@ -117,6 +119,16 @@ void Gameplay::LoadMap()
 		
 		// Get Element position information
 		rapidxml::xml_node<> *pPositions = pRoot->first_node("Positions");
+
+		// Read map dimensions
+		rapidxml::xml_attribute<> *pMapSize = pPositions->first_attribute();
+		xMapSize = std::stoi(pMapSize->value());
+		yMapSize = std::stoi(pMapSize->next_attribute()->value());
+
+		// Allocate map memory
+		map = new Tile* [xMapSize];
+		for (int i = 0; i < xMapSize; i++)
+			map[i] = new Tile[yMapSize];
 
 		rapidxml::xml_node<> *pNode = pPositions->first_node();	// First node inside Positions
 
@@ -169,7 +181,7 @@ void Gameplay::LoadMap()
 			x -= POSITION_TO_PIXEL_OFFSET;
 			y -= POSITION_TO_PIXEL_OFFSET;
 
-			map.push_back(Tile(mtdl::Vector2(x, y), TileType::WALL));
+			map[x][y] = Tile(mtdl::Vector2(x, y), TileType::WALL);
 		}
 	}
 	catch (const std::exception& e)

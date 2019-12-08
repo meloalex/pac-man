@@ -18,25 +18,11 @@
 #include "HUD.h"
 #include "Button.h"
 #include "AudioManager.h"
+#include "Tile.h"
 
 #define CONFIG_FILE_PATH "../../res/files/config.xml"
 
-enum class TileType {NORMAL, WALL, ENEMY, PLAYER, POWERUP};
-
 enum class GameplayState {GAME_START, RUNNING, PAUSED, GAME_OVER};
-
-struct Tile
-{
-	mtdl::Vector2 position;
-	TileType type;
-
-	Tile() {}
-	Tile(mtdl::Vector2 _position, TileType _type)
-	{
-		position = _position;
-		type = _type;
-	}
-};
 
 class Gameplay :
 	public Scene
@@ -51,8 +37,9 @@ private:
 
 	// Gameplay
 	Player player;
-	std::vector<Tile> map;
-	
+	Tile** map;
+	int xMapSize, yMapSize;
+
 	mtdl::Vector2 initialPlayerPosition;
 	mtdl::Vector2 initialBlinkyPosition;
 	mtdl::Vector2 initialInkyPosition;
